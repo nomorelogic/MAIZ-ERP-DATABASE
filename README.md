@@ -16,21 +16,39 @@ E' importante comprendere che in questo progetto troveremo solamente lo schema d
 ### Tipologie di campi e domini
 Molti DBMS hanno la possibilità di definire i domini (domains) per poi utilizzare questi nella definizione delle tabelle.
 quì spieghiamo come verranno utilizzati i domini.
+Nella tabella seguente, il prefisso "dmz" sta ad indicare che un DoMain maiZ.
 
-CREATE DOMAIN dmz_ID_GLOB bigint;               -- id globale (long)
-CREATE DOMAIN dmz_ID_LONG bigint;               -- id long
-CREATE DOMAIN dmz_ID_INT  integer;              -- id integer
+In questo database, sono previsti sia gli ID numerici che gli ID alfanumerici, questi ultimi da ora li chiameremo CODICI per distinguerli dai primi.
+Un ID (numerico) è un identificatore univoco immutabile all'interno del database ed è destinato ad essere usato nelle PK e nelle FK.
+Un CODICE (alfanumerico) è invece un identificatore univoco mutabile destinato all'uso degli utenti: sarà possibile cambiare ad esempio il codice di un articolo.
+Una ipotetica tabella articoli può essere definica come segue:
+```
+CREATE TABLE MAIZ_ARTICOLI (
+   Id_Articolo          dmz_ID_GLOB NOT NULL,
+   Codice_Articolo      dmz_ID_STR not null,
+   ...
+);
+}
+```
 
-CREATE DOMAIN dmz_ID_STR varchar(32);           -- id string(32)
-CREATE DOMAIN dmz_ID_STR05 varchar(5);          -- id string(5)
-CREATE DOMAIN dmz_ID_STR10 varchar(10);         -- id string(10)
+ID Numerici
+| DOMAIN                  | DATA TYPE     | NOTE                |
+|-------------------------|---------------|---------------------|
+| dmz_ID_GLOB             | bigint        | ID bigint univoco globale: non è possibile trovare lo stesso ID in tabelle diverse |
+| dmz_ID_LONG             | bigint        | ID bigint univoco a livello di singola tabella                                     |
+| dmz_ID_INT              | integer       | ID integer univoco a livello di singola tabella                                    |
 
-CREATE DOMAIN dmz_DESCR_05 varchar(05);
-CREATE DOMAIN dmz_DESCR_10 varchar(10);
-CREATE DOMAIN dmz_DESCRIZIONE varchar(75);
-CREATE DOMAIN dmz_FLAG_S varchar(1);
-CREATE DOMAIN dmz_FLAG_I integer;
-CREATE DOMAIN dmz_NUMERO_COEFFICIENTE decimal(10,6);
+CODICI Alfanumerici
+| dmz_COD_STR             | varchar(32)   | CODICE alfanumerico, len = 35 |
+| dmz_COD_STR05           | varchar(5)    | CODICE alfanumerico, len =  5 |
+| dmz_COD_STR10           | varchar(10)   | CODICE alfanumerico, len = 10 |
 
-CREATE DOMAIN dmz_TEXT AS BLOB SUB_TYPE TEXT;
+DOMAINS generici per campi dati
+| dmz_DESCR_05            | varchar(05)   | campo "descrizione mini", len =  5  |
+| dmz_DESCR_10            | varchar(10)   | campo "descrizione breve", len = 10 |
+| dmz_DESCRIZIONE         | varchar(75)   | campo "descrizione", len = 75       |
+| dmz_FLAG_S              | varchar(1)    | campo "flag" alfanumerico, Len = 1  |
+| dmz_FLAG_I              | integer       | campo "flag" intero                 |
+| dmz_NUMERO_COEFFICIENTE | decimal(10,6) | campo "coefficiente", decimale      |
+
 
